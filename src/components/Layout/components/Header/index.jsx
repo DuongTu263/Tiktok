@@ -15,7 +15,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
+import { Link } from "react-router-dom";
 
+import routesConfig from "src/config/routes";
 import { ReactComponent as Logo } from "src/assets/images/logo.svg";
 import Button from "src/components/Button";
 import classNames from "classnames/bind";
@@ -41,13 +43,13 @@ const MENU_ITEMS = [
       data: [
         {
           type: "language",
-          code: "en",
-          title: "English",
+          code: "vi",
+          title: "Tiếng Việt",
         },
         {
           type: "language",
-          code: "vi",
-          title: "Tiếng Việt",
+          code: "en",
+          title: "English",
         },
       ],
     },
@@ -112,7 +114,9 @@ function Header() {
     <header className={cx("wapper")}>
       <div className={cx("content")}>
         <div className={cx("logo")}>
-          <Logo />
+          <Link to={routesConfig.home} className={cx("logo-link")}>
+            <Logo />
+          </Link>
         </div>
         <Search />
 
