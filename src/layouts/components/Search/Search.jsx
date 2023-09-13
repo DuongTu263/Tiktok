@@ -8,7 +8,7 @@ import HeadlessTippy from "@tippyjs/react/headless";
 import classNames from "classnames/bind";
 import styles from "./Search.module.scss";
 
-import * as SearchServices from "src/apiServices/searchServices";
+import * as SearchServices from "src/services/searchService";
 import { Wrapper as PopperWrapper } from "src/components/Popper";
 import AccountItem from "src/components/AccountItem";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -19,15 +19,15 @@ const cx = classNames.bind(styles);
 function Search() {
   const [searchValue, setSearchValue] = useState("");
   const [searchResult, setSearchResult] = useState([]);
-  const [showResult, setShowResult] = useState(true);
+  const [showResult, setShowResult] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const debounced = useDebounce(searchValue, 500);
+  const debouncedValue = useDebounce(searchValue, 500);
 
   const inputRef = useRef();
 
   useEffect(() => {
-    if (!debounced.trim()) {
+    if (!debouncedValue.trim()) {
       setSearchResult([]);
       return;
     }
@@ -35,13 +35,19 @@ function Search() {
     const fetchApi = async () => {
       setLoading(true);
 
-      const result = await SearchServices.search(debounced);
+      const result = await SearchServices.search(debouncedValue);
       setSearchResult(result);
 
       setLoading(false);
     };
     fetchApi();
-  }, [debounced]);
+  }, [debouncedValue]);
+
+  const handleClear = () => {
+    setSearchValue("");
+    setSearchResult([]);
+    inputRef.current.focus();
+  };
 
   const handleHideResult = () => {
     setShowResult(false);
@@ -83,13 +89,7 @@ function Search() {
             onFocus={() => setShowResult(true)}
           />
           {!!searchValue && !loading && (
-            <button
-              className={cx("clear")}
-              onClick={() => {
-                setSearchValue("");
-                inputRef.current.focus();
-              }}
-            >
+            <button className={cx("clear")} onClick={handleClear}>
               <FontAwesomeIcon icon={faCircleXmark} />
             </button>
           )}

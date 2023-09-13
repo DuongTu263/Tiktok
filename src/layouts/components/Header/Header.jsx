@@ -1,4 +1,4 @@
-import React, { forwardRef } from "react";
+import { forwardRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPlus,
@@ -17,7 +17,7 @@ import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
 import { Link } from "react-router-dom";
 
-import routesConfig from "src/config/routes";
+import config from "src/config";
 import { ReactComponent as Logo } from "src/assets/images/logo.svg";
 import Button from "src/components/Button";
 import classNames from "classnames/bind";
@@ -25,7 +25,7 @@ import styles from "./Header.module.scss";
 import Menu from "src/components/Popper/Menu";
 import Image from "src/components/Image";
 import { MessageIcon, MailBoxIcon, LaptopIcon } from "src/components/Icons";
-import Search from "src/components/Layout/components/Search";
+import Search from "src/layouts/components/Search";
 
 const cx = classNames.bind(styles);
 
@@ -69,6 +69,7 @@ const MENU_ITEMS = [
   },
 ];
 
+// eslint-disable-next-line react/display-name
 const CustomButton = forwardRef(({ children, ...rest }, ref) => {
   return (
     <button ref={ref} {...rest}>
@@ -114,7 +115,7 @@ function Header() {
     <header className={cx("wapper")}>
       <div className={cx("content")}>
         <div className={cx("logo")}>
-          <Link to={routesConfig.home} className={cx("logo-link")}>
+          <Link to={config.routes.home} className={cx("logo-link")}>
             <Logo />
           </Link>
         </div>
@@ -144,9 +145,6 @@ function Header() {
             </>
           ) : (
             <>
-              <Button light leftIcon={<FontAwesomeIcon icon={faPlus} />}>
-                Tải lên
-              </Button>
               <Button primary>Đăng nhập</Button>
             </>
           )}
